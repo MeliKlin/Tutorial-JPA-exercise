@@ -31,6 +31,13 @@ public class TutorialsController {
         return ResponseEntity.created(uri).build();
     }
 
+    @GetMapping("/api/tutorials/{id}")
+    public ResponseEntity<Optional<Tutorial>> findTutorialById(
+            @PathVariable UUID id
+    ) {
+        return ResponseEntity.ok(tutorialRepository.findById(id));
+    }
+
     @GetMapping("/ping")
     public ResponseEntity<String> pong() {
         return ResponseEntity.ok("Pong");
