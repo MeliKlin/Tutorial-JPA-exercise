@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +30,11 @@ public class TutorialsController {
                 .toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/api/tutorials")
+    public ResponseEntity<List<Tutorial>> listTutorials() {
+        return ResponseEntity.ok(tutorialRepository.findAll());
     }
 
     @GetMapping("/api/tutorials/{id}")
