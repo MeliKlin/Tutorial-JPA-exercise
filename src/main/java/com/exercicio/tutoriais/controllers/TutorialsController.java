@@ -44,6 +44,20 @@ public class TutorialsController {
         return ResponseEntity.ok(tutorialRepository.findById(id));
     }
 
+    @DeleteMapping("api/tutorials")
+    public ResponseEntity<Void> deleteAllTutorials() {
+        tutorialRepository.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/api/tutorials/{id}")
+    public ResponseEntity<Void> deleteTutorialById(
+            @PathVariable UUID id
+    ) {
+        tutorialRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/ping")
     public ResponseEntity<String> pong() {
         return ResponseEntity.ok("Pong");
