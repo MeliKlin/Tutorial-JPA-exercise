@@ -1,12 +1,14 @@
 package com.exercicio.tutoriais.controllers;
 
 import com.exercicio.tutoriais.TutorialRepository;
+import com.exercicio.tutoriais.dtos.CreateTutorialDTO;
 import com.exercicio.tutoriais.models.Tutorial;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -20,9 +22,10 @@ public class TutorialsController {
 
     @PostMapping("/api/tutorials")
     public ResponseEntity<Void> createTutorial(
-            @RequestBody Tutorial tutorial,
+            @Valid @RequestBody CreateTutorialDTO tutorialDTO,
             UriComponentsBuilder uriBuilder
     ) {
+        Tutorial tutorial = tutorialDTO.mountTutorial();
         Tutorial tutorialCreated = tutorialRepository.save(tutorial);
 
         URI uri = uriBuilder.path("/api/tutorials/{id}")
