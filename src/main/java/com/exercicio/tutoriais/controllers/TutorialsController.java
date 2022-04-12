@@ -49,6 +49,11 @@ public class TutorialsController {
         return ResponseEntity.ok(tutorialRepository.findById(id));
     }
 
+    @GetMapping("/api/tutorials/published")
+    public ResponseEntity<List<Tutorial>> listAllPublishedTutorials() {
+        return ResponseEntity.ok(tutorialRepository.findAllByPublished(true));
+    }
+
     @PutMapping("/api/tutorials/{id}")
     public ResponseEntity<Void> updateTutorial(
             @PathVariable UUID id,
