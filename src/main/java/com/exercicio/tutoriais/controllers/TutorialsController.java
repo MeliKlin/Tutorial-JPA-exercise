@@ -38,8 +38,14 @@ public class TutorialsController {
     }
 
     @GetMapping("/api/tutorials")
-    public ResponseEntity<List<Tutorial>> listTutorials() {
-        return ResponseEntity.ok(tutorialRepository.findAll());
+    public ResponseEntity<List<Tutorial>> listTutorials(
+            @RequestParam Optional<String> title
+    ) {
+        if (title.isEmpty()) {
+            return ResponseEntity.ok(tutorialRepository.findAll());
+        }
+
+        return ResponseEntity.ok(tutorialRepository.findAllByTitle(title.get()));
     }
 
     @GetMapping("/api/tutorials/{id}")
