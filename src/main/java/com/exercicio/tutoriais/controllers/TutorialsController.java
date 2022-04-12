@@ -2,6 +2,8 @@ package com.exercicio.tutoriais.controllers;
 
 import com.exercicio.tutoriais.TutorialRepository;
 import com.exercicio.tutoriais.dtos.CreateTutorialDTO;
+import com.exercicio.tutoriais.dtos.UpdateTutorialDTO;
+import com.exercicio.tutoriais.errors.TutorialNotFoundException;
 import com.exercicio.tutoriais.models.Tutorial;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +47,21 @@ public class TutorialsController {
             @PathVariable UUID id
     ) {
         return ResponseEntity.ok(tutorialRepository.findById(id));
+    }
+
+    @PutMapping("/api/tutorials/{id}")
+    public ResponseEntity<Void> updateTutorial(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateTutorialDTO updateTutorialDTO
+    ) throws TutorialNotFoundException {
+        Optional<Tutorial> tutorial = tutorialRepository.findById(id);
+        if (tutorial.isEmpty()) {
+            throw new TutorialNotFoundException("Tutorial não encontrado pelo ID informado");
+        }
+
+        updateTutorialDTO.mountTutorialToBeUpdated(tutorial.get());
+        tutorialRepository.saveAndFlush(tutorial.get());
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("api/tutorials")
